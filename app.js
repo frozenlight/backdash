@@ -34,6 +34,7 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var nunjucks = require('nunjucks')
 var mongoose = require('mongoose')
+var slugs = require('mongoose-url-slugs')
 
 // Import routes
 var routes = require('./routes/index')
@@ -47,7 +48,7 @@ var users = require('./routes/users')
 var app = express()
 
 // Connect to MongoDB via the Mongoose adapter
-mongoose.connect('mongodb://localhost/fodash-test')
+mongoose.connect('mongodb://localhost/backdash-test')
 
 // Set standard HTML view/template directory
 app.set('views', path.join(__dirname, 'views'))
@@ -69,7 +70,7 @@ app.use(logger('dev'))
 
 // Initialize body parser for POST requests for HTML and JSON
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // Initialize cookie parser
 app.use(cookieParser())

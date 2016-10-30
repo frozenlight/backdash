@@ -5,10 +5,156 @@
 {% endblock %}
 
 {% block content %}
-		<div id="main-logo">
-			<p id="main-logo-orange">\\</p>
-			<p id="main-logo-black">dash</p>
+
+		{% if message %}
+		<div class="row">
+			<div class="col s12 m6">
+				<div class="card red darken-4">
+					<div class="card-content white-text">
+						<p>{{message}}</p>
+					</div>
+				</div>
+			</div>
 		</div>
+		{% endif %}
+
+		<div class="row">
+			<div class="col s12">
+				<ul class="tabs">
+					<li class="tab col s3"><a href="#create-group">Create Group</a></li>
+					<li class="tab col s3"><a href="#add-series">Add Series</a></li>
+					<li class="tab col s3"><a href="#add3">Add Something Else</a></li>
+					<li class="tab col s3"><a class="active" href="#add4">Add a Fourth Thing</a></li>
+				</ul>
+			</div>
+			<div id="create-group" class="col s12">
+				<div class="divider"></div>
+				<div class="section">
+					<div class="row">
+						<form class="col s12" method="POST" action="/add-group">
+							<div class="row">
+								<div class="col s2"></div>
+								<div class="input-field col s4">
+									<input placeholder="Placeholder" id="first_name" type="text" class="validate" name="group_name">
+									<label for="first_name">Group Name</label>
+								</div>
+								<div class="input-field col s4">
+									<input id="group_icon" type="text" class="validate" name="group_icon">
+									<label for="group_icon">Group Icon</label>
+								</div>
+								<div class="col s2"></div>
+							</div>
+							<div class="row">
+								<div class="col s9"></div>
+								<div class="col s2">
+									<button class="btn waves-effect waves-light orange darken-1" type="submit">Submit
+										<i class="material-icons right">send</i>
+									</button>
+								</div>
+								<div class="col s1"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div id="add-series" class="col s12">
+				<div class="divider"></div>
+			</div>
+			<div id="add3" class="col s12">
+				<div class="divider"></div>
+			</div>
+			<div id="add4" class="col s12">
+				<div class="divider"></div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col s12">
+				<div class="col s1"></div>
+				<div class="col s10">
+					<div id="main-logo">
+						<p id="main-logo-orange">\\</p>
+						<p id="main-logo-black">dash</p>
+					</div>
+				</div>
+				<div class="col s1"></div>
+			</div>
+		</div>
+
+		<div class="divider"></div>
+
+		{% for group in groups %}
+		<div class="row">
+			<div class="col s12">
+				<div class="row">
+					<div class="col s1"></div>
+						<div class="col s10">
+							<div class="card white">
+								<div class="card-content black-text">
+									<div class="col s6">
+										<h5>{{group.name}}</h5>
+									</div>
+									<div class="col s6">
+										<div class="row">
+											<div class="col s12">
+												<ul class="tabs">
+													<li class="tab col s3"><a href="#group-info">Wesites</a></li>
+													<li class="tab col s3"><a href="#add-website">Add Website</a></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="divider"></div>
+									<div class="section">
+										<div id="group-info">
+											<div class="divider"></div>
+											{% for website in group.websites %}
+
+											{% endfor %}
+											<p>HER SKAL DET STÅ STUFF OM DE FORKJSELLIGE NETTSIDENE DENNE GRUPPEN INNEHOLDER</p>
+										</div>
+										<div id=add-website>
+											<div class="divider"></div>
+											<div class="row">
+												<form class="col s12 text-orange" method="POST" action="/group/{{group.slug}}/add-website">
+													<div class="row">
+														<div class="col s1"></div>
+														<div class="input-field col s3">
+															<input id="website_name" type="text" class="validate" name="website_name">
+															<label for="website_name" class="text-orange">Group Name</label>
+														</div>
+														<div class="input-field col s3">
+															<input id="website_image" type="text" class="validate" name="website_image">
+															<label for="website_image">Website Image</label>
+														</div>
+														<div class="input-field col s4">
+															<input id="website_url" type="text" class="validate" name="website_url">
+															<label for="website_url">Website URL</label>
+														</div>
+														<div class="col s1"></div>
+													</div>
+													<div class="row">
+														<div class="col s9"></div>
+														<div class="col s2">
+															<button class="btn waves-effect waves-light orange darken-1" type="submit">Submit
+																<i class="material-icons right">send</i>
+															</button>
+														</div>
+														<div class="col s1"></div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					<div class="col s1"></div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+
 {% endblock %}
 
 {% block scripts %}
