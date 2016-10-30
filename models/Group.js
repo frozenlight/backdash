@@ -6,7 +6,7 @@ var GroupSchema = new mongoose.Schema({
 	name: {type: String},
 	icon: {type: String},
 	image: {type: String},
-	websites: {type: Array},
+	websites: [{type: mongoose.Schema.ObjectId, ref:'Website'}],
 	slug: {type: String},
 })
 
@@ -17,7 +17,7 @@ GroupSchema.statics.formFill = (input) => {
 		group.slug = createSlug(group.name)
 	} else {
 		group.name = 'None'
-		group.slug = group.name
+		group.slug = 'none'
 	}
 	if (input.group_icon !== '') {
 		group.icon = input.group_icon
@@ -49,11 +49,11 @@ GroupSchema.methods.updateFormFill = (input) => {
 	}
 }
 
+module.exports = mongoose.model('Group', GroupSchema)
+
 let createSlug = (base) => {
 	return base.toLowerCase().replaceAll(/\W+/g, "-")
 }
-
-module.exports = mongoose.model('Group', GroupSchema)
 
 String.prototype.replaceAll = function (search, replacement) {
     var target = this;

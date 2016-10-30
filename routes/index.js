@@ -37,7 +37,39 @@ router.route('/add-group')
 		})
 	})
 
-router.route('/api') 
+router.route('/add-website/:group_slug')
+	.post((req, res) => {
+		let slug = req.params.group_slug
+		Group.findOne({slug:slug}, (err, group) => {
+			if (err) {
+				render_error(res, err)
+			}
+			if (group) {
+				let new_website = new Website(Website.formFill(req.body, group.id))
+
+				new_website.save((err) => {
+					if (err) {
+						render_error(res, err)
+					} else {
+						group.websites.push(new_website.id)
+						console.log(group)
+						group.save((err) => {
+							if (err) {
+								render_error(res, error)
+							} else {
+								console.log(group)
+								res.redirect('/')
+							}
+						})
+					}
+				})
+			} else {
+				render_index (req, res, 'Could not find a group with that url!')
+			}
+		})
+	})
+
+router.route('/api/groups') 
 	.get((req, res) => {
 		Group.find()
 			.populate('websites')
@@ -46,6 +78,19 @@ router.route('/api')
 					render_error(res, err)
 				} else {
 					res.json(groups)
+				}
+			})
+	})
+
+router.route('/api/websites') 
+	.get((req, res) => {
+		Website.find()
+			.populate('group')
+			.exec((err, websites) => {
+				if (err) {
+					render_error(res, err)
+				} else {
+					res.json(websites)
 				}
 			})
 	})

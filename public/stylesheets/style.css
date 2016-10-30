@@ -36,3 +36,12 @@ main {
 	color: orange;
     background-color: orange;
 }
+
+.same-line {
+	display: inline-block;
+    vertical-align: top;
+}
+
+.text-bold {
+	font-weight: bold;
+}
