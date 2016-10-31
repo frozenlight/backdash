@@ -6,18 +6,6 @@
 
 {% block content %}
 
-		{% if message %}
-		<div class="row">
-			<div class="col s12 m6">
-				<div class="card red darken-4">
-					<div class="card-content white-text">
-						<p>{{message}}</p>
-					</div>
-				</div>
-			</div>
-		</div>
-		{% endif %}
-
 		<div class="row">
 			<div class="col s12">
 				<ul class="tabs">
@@ -68,6 +56,18 @@
 			</div>
 		</div>
 
+		{% if message %}
+		<div class="row">
+			<div class="col s12 m6">
+				<div class="card red darken-4">
+					<div class="card-content white-text">
+						<p>{{message}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+
 		<div class="row">
 			<div class="col s12">
 				<div class="col s1"></div>
@@ -109,16 +109,16 @@
 										<div id="group-info-{{group.slug}}">
 											<div class="divider"></div>
 												<div class="row">
-													<div class="col s12 m7">
+													<div class="col s12 m12">
 														{% for website in group.websites %}
-														<div class="col s3">
+														<div class="col s2">
 															<a href="{{website.url}}">
 																<div class="card small">
 																	<div class="card-image">
 																		<img src="{{website.image}}">
-																		<span class="card-title text-black">{{website.name}}</span>
 																	</div>
 																	<div class="card-content">
+																		<span class="card-title black-text">{{website.name}}</span>
 																		<p>{{website.description}}</p>
 																	</div>
 																</div>

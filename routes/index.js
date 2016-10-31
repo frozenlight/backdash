@@ -37,25 +37,40 @@ router.route('/add-group')
 		})
 	})
 
+// Route for adding website to group, only POST requests
 router.route('/add-website/:group_slug')
+	
+	// Function for recieved POST request
 	.post((req, res) => {
 		let slug = req.params.group_slug
+
+		// Find the group corresponding to the URL-slug for the group 
 		Group.findOne({slug:slug}, (err, group) => {
 			if (err) {
 				render_error(res, err)
 			}
+
+			// If group exists, continue..
 			if (group) {
+
+				// Create new website-object with form info and add group.id to link them
 				let new_website = new Website(Website.formFill(req.body, group.id))
 
+				// Save new website object
 				new_website.save((err) => {
 					if (err) {
 						render_error(res, err)
+
+					// If there are no errors, continue by adding website.id to the group object
 					} else {
 						group.websites.push(new_website.id)
-						console.log(group)
+
+						// Save the group object
 						group.save((err) => {
 							if (err) {
 								render_error(res, error)
+
+							// If seccessfull, redirect to index page
 							} else {
 								console.log(group)
 								res.redirect('/')
@@ -63,11 +78,16 @@ router.route('/add-website/:group_slug')
 						})
 					}
 				})
+
+			// If not found, render index with error message
 			} else {
 				render_index (req, res, 'Could not find a group with that url!')
 			}
 		})
 	})
+
+// API routes, mostly for debug information
+// Should be put into their own routes file
 
 router.route('/api/groups') 
 	.get((req, res) => {
@@ -95,30 +115,8 @@ router.route('/api/websites')
 			})
 	})
 
-// Function for editing a group object, equal for add and edit routes
-// Lets you edit only oen function for the two use cases witch are quite equal
-function edit_group (group, input) {
+// Render functions, just to make it a little easier to render special pages when needed
 
-	let edited = false
-
-	if (validate_input(input.group_name)) {
-		group.name = input.group_name
-		edited = true
-	}
-	if (validate_input(input.group_icon)) {
-		group.icon = input.group_icon
-		edited = true
-	}
-	if (validate_input(input.group_image)) {
-		group.image = input.group_image
-		edited = true
-	}
-	if (edited) {
-		return group
-	} else {
-		return edited
-	}
-}
 function render_error (res, error) {
 	res.render('error', {error:error})
 }
@@ -138,14 +136,6 @@ function render_index (req, res, message) {
 				res.render('index', objects)
 			}
 		})
-}
-
-function validate_input (input) {
-	if (!input || input === '') {
-		return false
-	} else {
-		return true
-	}
 }
 
 module.exports = router

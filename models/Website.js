@@ -31,7 +31,11 @@ WebsiteSchema.statics.formFill = (input, group_id) => {
 		website.image = 'public/images/placeholders/website-image.png'
 	}
 	if (input.website_url !== '') {
-		website.url = input.website_url
+		if (input.website_url.indexOf('https://') < 0 || input.website_url.indexOf('http://') < 0) {
+			website.url = 'https://' + input.website_url
+		} else {
+			website.url = input.website_url
+		}
 	} else {
 		website.url = '#!'
 	}
