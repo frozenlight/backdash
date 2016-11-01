@@ -5,10 +5,187 @@
 {% endblock %}
 
 {% block content %}
-		<div id="main-logo">
-			<p id="main-logo-orange">\\</p>
-			<p id="main-logo-black">dash</p>
+
+		<div class="divider"></div>
+
+		{% for group in groups %}
+		<div class="row">
+			<div class="col s12">
+				<div class="row">
+					<div class="col s1"></div>
+						<div class="col s10">
+							<div class="card white">
+								<div class="card-content black-text">
+									<div class="col s6 same-line">
+										<h4 class="text-bold"><i class="small material-icons">{{group.icon}}</i> {{group.name}}</h4>
+									</div>
+									<div class="col s6">
+										<div class="row">
+											<div class="col s12">
+												<ul class="tabs">
+													<li class="tab col s3"><a href="#group-info-{{group.slug}}" class="orange-text">Wesites</a></li>
+													<li class="tab col s3"><a href="#add-website-{{group.slug}}" class="orange-text">Add Website</a></li>
+													<li class="tab col s3"><a href="#edit-website-{{group.slug}}" class="orange-text">Edit Website</a></li>
+													<li class="tab col s3"><a href="#edit-group-{{group.slug}}" class="orange-text">Edit Group</a></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="divider"></div>
+									<div class="section">
+										<div id="group-info-{{group.slug}}">
+											<div class="divider"></div>
+												<div class="row">
+													<div class="col s12 m12">
+														{% for website in group.websites %}
+														<div class="col s2">
+															<a href="{{website.url}}">
+																<div class="card small">
+																	<div class="card-image">
+																		<img src="{{website.image}}">
+																	</div>
+																	<div class="card-content">
+																		<span class="card-title black-text">{{website.name}}</span>
+																		<p>{{website.description}}</p>
+																	</div>
+																</div>
+															</a>
+														</div>
+														{% endfor %}
+													</div>
+												</div>
+											</div>
+										</div>
+										<div id=add-website-{{group.slug}}>
+											<div class="divider"></div>
+											<div class="row">
+												<form class="col s12 text-orange" method="POST" action="/add-website/{{group.slug}}">
+													<div class="row">
+														<div class="col s1"></div>
+														<div class="input-field col s3">
+															<input id="website_name-{{group.slug}}" type="text" class="validate" name="website_name">
+															<label for="website_name-{{group.slug}}" class="orange-text">Website Name</label>
+														</div>
+														<div class="input-field col s3">
+															<input id="website_image-{{group.slug}}" type="text" class="validate" name="website_image">
+															<label for="website_image-{{group.slug}}" class="orange-text">Website Image</label>
+														</div>
+														<div class="input-field col s4">
+															<input id="website_url-{{group.slug}}" type="text" class="validate" name="website_url">
+															<label for="website_url-{{group.slug}}" class="orange-text">Website URL</label>
+														</div>
+														<div class="col s1"></div>
+													</div>
+													<div class="row">
+														<div class="col s9"></div>
+														<div class="col s2">
+															<button class="btn waves-effect waves-light orange darken-1" type="submit">Submit
+																<i class="material-icons right">send</i>
+															</button>
+														</div>
+														<div class="col s1"></div>
+													</div>
+												</form>
+											</div>
+										</div>
+										<div id=edit-website-{{group.slug}}>
+											{% for website in group.websites %}
+											<div class="divider"></div>
+											<div class="row">
+												<form class="col s12 text-orange" method="POST" action="/edit-website/{{website.slug}}">
+													<div class="row">
+														<div class="col s1"></div>
+														<div class="input-field col s3">
+															<input value="{{website.name}}" id="edit-website_name-{{group.slug}}" type="text" class="validate" name="website_name">
+															<label for="edit-website_name-{{group.slug}}" class="orange-text">Website Name</label>
+														</div>
+														<div class="input-field col s3">
+															<input value="{{website.image}}" id="edit-website_image-{{group.slug}}" type="text" class="validate" name="website_image">
+															<label for="edit-website_image-{{group.slug}}" class="orange-text">Website Image</label>
+														</div>
+														<div class="input-field col s4">
+															<input value="{{website.url}}" id="edit-website_url-{{group.slug}}" type="text" class="validate" name="website_url">
+															<label for="edit-website_url-{{group.slug}}" class="orange-text">Website URL</label>
+														</div>
+														<div class="col s1"></div>
+													</div>
+													<div class="row">
+														<div class="col s9"></div>
+														<div class="col s2">
+															<button class="btn waves-effect waves-light orange darken-1" type="submit">Submit
+																<i class="material-icons right">send</i>
+															</button>
+														</div>
+														<div class="col s1"></div>
+													</div>
+												</form>
+												<form class="col s12" action="/edit-website/{{website.slug}}" method="POST">
+													<input type="hidden" name="_method" value="DELETE">
+													<div class="row">
+														<div class="col s9"></div>
+														<div class="col s2">
+															<button class="btn waves-effect waves-light red darken-1" type="submit">Delete
+																<i class="material-icons right">highlight_off</i>
+															</button>
+														</div>
+														<div class="col s1"></div>
+													</div>
+												</form>
+											</div>
+											{% endfor %}
+										</div>
+										<div id="edit-group-{{group.slug}}">
+											<div class="divider"></div>
+											<div class="section">
+												<div class="row">
+													<form class="col s12" method="POST" action="/edit-group/{{group.slug}}">
+														<div class="row">
+															<div class="col s2"></div>
+															<div class="input-field col s4">
+																<input value="{{group.name}}" id="group-name" type="text" class="validate" name="group_name">
+																<label for="group-name" class="orange-text">Group Name</label>
+															</div>
+															<div class="input-field col s4">
+																<input value="{{group.icon}}" id="group_icon" type="text" class="validate" name="group_icon">
+																<label for="group_icon" class="orange-text">Group Icon</label>
+															</div>
+															<div class="col s2"></div>
+														</div>
+														<div class="row">
+															<div class="col s9"></div>
+															<div class="col s2">
+																<button class="btn waves-effect waves-light orange darken-1" type="submit">Submit
+																	<i class="material-icons right">send</i>
+																</button>
+															</div>
+															<div class="col s1"></div>
+														</div>
+													</form>
+													<form class="col s12" action="/edit-group/{{group.slug}}" method="POST">
+														<input type="hidden" name="_method" value="DELETE">
+														<div class="row">
+															<div class="col s9"></div>
+															<div class="col s2">
+																<button class="btn waves-effect waves-light red darken-1" type="submit">Delete
+																	<i class="material-icons right">highlight_off</i>
+																</button>
+															</div>
+															<div class="col s1"></div>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					<div class="col s1"></div>
+				</div>
+			</div>
 		</div>
+		{% endfor %}
+
 {% endblock %}
 
 {% block scripts %}

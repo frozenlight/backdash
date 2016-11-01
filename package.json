@@ -1,29 +1,30 @@
 {
-	"name": "fodash",
-	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"start": "node ./bin/www"
-	},
-	"dependencies": {
-		"bcrypt-nodejs": "latest",
-		"body-parser": "~1.15.2",
-		"connect-ensure-login": "^0.1.1",
-		"connect-flash": "~0.1.1",
-		"connect-roles": "^3.1.2",
-		"cookie-parser": "~1.4.3",
-		"debug": "~2.2.0",
-		"express": "~4.13.4",
-		"express-session": "~1.0.0",
-		"method-override": "^1.0.2",
-		"moment": "^2.15.1",
-		"mongodb": "~2.2.10",
-		"mongoose": "~4.6.1",
-		"morgan": "~1.7.0",
-		"nimble": "0.0.2",
-		"nunjucks": "^2.5.2",
-		"passport": "~0.1.17",
-		"passport-local": "~0.1.6",
-		"serve-favicon": "~2.3.0"
-	}
+  "name": "backdash",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "latest",
+    "body-parser": "~1.15.2",
+    "connect-ensure-login": "^0.1.1",
+    "connect-flash": "~0.1.1",
+    "connect-roles": "^3.1.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "express": "~4.13.4",
+    "express-session": "~1.0.0",
+    "method-override": "^1.0.2",
+    "moment": "^2.15.1",
+    "mongodb": "~2.2.10",
+    "mongoose": "~4.6.1",
+    "mongoose-url-slugs": "^0.2.1",
+    "morgan": "~1.7.0",
+    "nimble": "0.0.2",
+    "nunjucks": "^2.5.2",
+    "passport": "~0.1.17",
+    "passport-local": "~0.1.6",
+    "serve-favicon": "~2.3.0"
+  }
 }

@@ -1,5 +1,4 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -7,12 +6,42 @@ a {
   color: #00B7FF;
 }
 
+#main-logo {
+	padding-left: 50px;
+	margin: 0;
+}
+
 #main-logo > p {
+	margin: 0;
 	font-size: 128px;
-    display: inline-block;
+	display: inline-block;
     vertical-align: top;
 }
 
 #main-logo-orange {
 	color: orange;
+}
+
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+main {
+	flex: 1 0 auto;
+}
+
+.tabs .indicator {
+	color: orange;
+    background-color: orange;
+}
+
+.same-line {
+	display: inline-block;
+    vertical-align: top;
+}
+
+.text-bold {
+	font-weight: bold;
 }
