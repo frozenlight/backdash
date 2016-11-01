@@ -6,6 +6,17 @@ let router = express.Router()
 let Group = require('../models/Group.js')
 let Website = require('../models/Website.js')
 
+// Add method override to make DELETE requests possible from standard HTML forms
+// To use, add hidden input with name="_method" and value="DELETE"
+router.use(function(req,res,next){
+    if ( req.query._method == 'DELETE' || req.body._method == 'DELETE') {
+        req.method = 'DELETE'
+        req.url = req.path
+        console.log(JSON.stringify(req.body))
+    }      
+	next()
+})
+
 /* GET home page. */
 router.route('/')
 	.get((req, res, next) => {
@@ -15,15 +26,16 @@ router.route('/')
 
 router.route('/add-group')
 	.post((req, res) => {
-		console.log('Hit by post to /add-group with body: ' + JSON.stringify(req.body))
+		console.log('Hit by POST to /add-group with body: ' + JSON.stringify(req.body))
 		let name = req.body.group_name
-		Group.findOne({name:name}, (err, group) => {
+		Group.findOne({slug:Group.createSlug(name)}, (err, group) => {
 			if (err) {
 				render_error(res, err)
 			} 
 			if (!group) {
 				console.log('Could not find a group with the same name, continuing...')
-				Group.create(Group.formFill(req.body), (err) => {
+				let new_group = Group.formFill(new Group(), req.body)
+				new_group.save((err) => {
 					if (err) {
 						render_error(res, err)
 					} else {
@@ -37,12 +49,52 @@ router.route('/add-group')
 		})
 	})
 
+router.route('/edit-group/:group_slug')
+	.post((req, res) => {
+		let slug = req.params.group_slug
+		Group.findOne({slug:slug}, (err, group) => {
+			if (err) {
+				render_error(res, err)
+			} else {
+				group = Group.formFill(group, req.body)
+				group.save((err) => {
+					if (err) {
+						render_error(res, err)
+					} else {
+						res.redirect('/')
+					}
+				})
+			}
+		})
+	})
+	.delete((req, res) => {
+		let slug = req.params.group_slug
+		Group.findOneAndRemove({slug:slug}, (err, group) => {
+			if (err) {
+				render_error(res, err)
+			} else if (group.websites.length) {
+				Website.findByIdAndRemove({id: {$in: group.websites}}, (err) => {
+					if (err) {
+						render_error(res, err)
+					} else {
+						res.redirect('/')
+					}
+				})
+			} else {
+				res.redirect('/')
+			}
+		})
+	})
+
 // Route for adding website to group, only POST requests
 router.route('/add-website/:group_slug')
 	
 	// Function for recieved POST request
 	.post((req, res) => {
+
 		let slug = req.params.group_slug
+
+		console.log('Hit by POST to /add-website/' + slug + ' with body: ' + JSON.stringify(req.body))
 
 		// Find the group corresponding to the URL-slug for the group 
 		Group.findOne({slug:slug}, (err, group) => {
@@ -54,7 +106,7 @@ router.route('/add-website/:group_slug')
 			if (group) {
 
 				// Create new website-object with form info and add group.id to link them
-				let new_website = new Website(Website.formFill(req.body, group.id))
+				let new_website = Website.formFill(new Website(), req.body, group.id)
 
 				// Save new website object
 				new_website.save((err) => {
@@ -82,6 +134,48 @@ router.route('/add-website/:group_slug')
 			// If not found, render index with error message
 			} else {
 				render_index (req, res, 'Could not find a group with that url!')
+			}
+		})
+	})
+
+router.route('/edit-website/:website_slug/')
+	.post((req, res) => {
+		let slug = req.params.website_slug
+		Website.findOne({slug:slug}, (err, website) => {
+			if (err) {
+				render_error(res, err)
+			} else {
+				website = Website.formFill(website, req.body)
+				website.save((err) => {
+					if (err) {
+						render_error(res, err)
+					} else {
+						res.redirect('/')
+					}
+				})
+			}
+		})
+	})
+	.delete((req, res) => {
+		let slug = req.params.website_slug
+		Website.findOneAndRemove({slug:slug}, (err, group) => {
+			if (err) {
+				render_error(res, err)
+			} else {
+				Group.find({websites: website.id}, (err, groups) => {
+					if (err) {
+						render_error(res, err)
+					} else {
+						groups.websites = groups.websites.filter((id) => id == website.id)
+						groups.save((err) => {
+							if (err) {
+								render_error(res, err)
+							} else {
+								res.redirect('/')
+							}
+						})
+					}
+				})
 			}
 		})
 	})

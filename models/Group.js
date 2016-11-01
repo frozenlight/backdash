@@ -10,26 +10,28 @@ var GroupSchema = new mongoose.Schema({
 	slug: {type: String},
 })
 
-GroupSchema.statics.formFill = (input) => {
-	let group = {}
+GroupSchema.statics.formFill = (group, input) => {
+	
 	if (input.group_name.length >= 3) {
 		group.name = input.group_name
 		group.slug = createSlug(group.name)
-	} else {
+	} else if (!group.name) {
 		group.name = 'None'
 		group.slug = 'none'
 	}
 	if (input.group_icon !== '') {
 		group.icon = input.group_icon
-	} else {
+	} else if (!group.icon) {
 		group.icon = '/public/images/placeholders/group-icon.png'
 	}
 	if (input.group_image !== '') {
 		group.image = input.group_image
-	} else {
+	} else if (!group.image) {
 		group.image = 'public/images/placeholders/group-image.png'
 	}
-	group.websites = []
+	if (!group.websites) {
+		group.websites = []
+	}
 
 	console.log('Inside, after assignment ' + JSON.stringify(group))
 
@@ -47,6 +49,10 @@ GroupSchema.methods.updateFormFill = (input) => {
 	if (input.group_image !== ''){
 		this.image = input.group_image
 	}
+}
+
+GroupSchema.statics.createSlug = (base) => {
+	return base.toLowerCase().replaceAll(/\W+/g, "-")
 }
 
 module.exports = mongoose.model('Group', GroupSchema)

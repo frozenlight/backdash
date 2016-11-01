@@ -9,29 +9,29 @@ var WebsiteSchema = new mongoose.Schema({
 	image: {type: String, default: ''},
 	description: {type: String, default: ''},
 	group: {type: mongoose.Schema.ObjectId, ref: 'Group'},
+	slug: {type: String},
 })
 
-WebsiteSchema.statics.formFill = (input, group_id) => {
-	let website = {}
+WebsiteSchema.statics.formFill = (website, input, group_id) => {
 	if (input.website_name.length >= 3) {
 		website.name = input.website_name
 		website.slug = createSlug(website.name)
-	} else {
+	} else if (!website.name) {
 		website.name = 'None'
 		website.slug = 'none'
 	}
 	if (input.website_icon !== '') {
 		website.icon = input.website_icon
-	} else {
+	} else if (!website.icon) {
 		website.icon = '/public/images/placeholders/website-icon.png'
 	}
 	if (input.website_image !== '') {
 		website.image = input.website_image
-	} else {
+	} else if (!website.image) {
 		website.image = 'public/images/placeholders/website-image.png'
 	}
 	if (input.website_url !== '') {
-		if (input.website_url.indexOf('https://') < 0 || input.website_url.indexOf('http://') < 0) {
+		if (input.website_url.indexOf('https://') > 0 || input.website_url.indexOf('http://') > 0) {
 			website.url = 'https://' + input.website_url
 		} else {
 			website.url = input.website_url
@@ -39,8 +39,9 @@ WebsiteSchema.statics.formFill = (input, group_id) => {
 	} else {
 		website.url = '#!'
 	}
-	website.group = group_id
-
+	if (!website.group && group_id) {
+		website.group = group_id
+	}
 	console.log('Inside, after assignment ' + JSON.stringify(website))
 
 	return website

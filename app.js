@@ -69,6 +69,7 @@ app.set( 'view engine', 'html' )
 app.use(logger('dev'))
 
 // Initialize body parser for POST requests for HTML and JSON
+// Set extended to true to access req.body
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
