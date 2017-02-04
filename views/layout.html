@@ -4,6 +4,8 @@
 		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/materialize.css" media="screen,projection"\>
 		<link rel="stylesheet" href="/stylesheets/style.css">
+		<link rel="stylesheet" type="text/css" href="/fullcalendar/fullcalendar.css">
+		<link rel="stylesheet" type="text/css" href="/fullcalendar/fullcalendar.print.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		{% block head %}
 		{% endblock %}
@@ -18,7 +20,7 @@
 						<li class="tab col s3"><a href="#create-group" class="orange-text">Create Group</a></li>
 						<li class="tab col s3"><a href="#add-series" class="orange-text">Add Series</a></li>
 						<li class="tab col s3"><a href="#add3" class="orange-text">Add Something Else</a></li>
-						<li class="tab col s3"><a class="active orange-text" href="#add4">Add a Fourth Thing</a></li>
+						<li class="tab col s3"><a class="active blue-text text-darken-2" href="#online-events">Online Event Calendar</a></li>
 					</ul>
 				</div>
 				<div id="create-group" class="col s12">
@@ -57,8 +59,9 @@
 				<div id="add3" class="col s12">
 					<div class="divider"></div>
 				</div>
-				<div id="add4" class="col s12">
+				<div id="online-events" class="col s12">
 					<div class="divider"></div>
+					<div id="calendar"></div>
 				</div>
 			</div>
 
@@ -91,8 +94,10 @@
 			{% endblock %}
 		</main>
 
-		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="/javascripts/jquery-3.1.1.js"></script>
 		<script type="text/javascript" src="/javascripts/materialize.js"></script>
+		<script type="text/javascript" src="/javascripts/fullcalendar.js"></script>
+		<script type="text/javascript" src="/javascripts/calendar.js"></script>
 
 		{% block scripts %}
 		{% endblock %}
