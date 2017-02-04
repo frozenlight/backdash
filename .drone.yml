@@ -1,0 +1,8 @@
+build:
+  image: node:6.7
+  when:
+    event: push
+    branch: master
+  commands:
+    - echo "hello world!"
+    - npm install --silent
